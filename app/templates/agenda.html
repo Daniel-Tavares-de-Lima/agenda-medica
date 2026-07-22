@@ -3,13 +3,43 @@
 <head>
   <meta charset="utf-8">
   <title>Agenda Médica</title>
+  <!-- Tabulator: biblioteca de tabela (via CDN, sem npm) -->
+  <link href="https://unpkg.com/tabulator-tables@6.3.0/dist/css/tabulator.min.css" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; }
+    body { font-family: Arial, sans-serif; max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    .topo { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .busca { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
+    .busca input { flex: 1; min-width: 200px; padding: 8px; }
+    .busca button { padding: 8px 14px; }
+    #mensagem { min-height: 1.5em; color: #333; }
+    #mensagem.erro { color: #b00020; }
   </style>
 </head>
 <body>
-  <p>Olá, {{ username }}!</p>
-  <p><a href="{{ url_for('main.logout') }}">Sair</a></p>
-  <p>A tabela da agenda (Tabulator) entra já já. Ainda em desenvolvimento</p>
+  <div class="topo">
+    <div>
+      <h1>Agenda Médica</h1>
+      <p>Olá, {{ username }}!</p>
+    </div>
+    <a href="{{ url_for('main.logout') }}">Sair</a>
+  </div>
+
+  <form class="busca" id="form-busca">
+    <input
+      type="text"
+      id="campo-busca"
+      name="q"
+      placeholder="Buscar por paciente, CPF ou médico"
+      autocomplete="off"
+    >
+    <button type="submit">Buscar</button>
+    <button type="button" id="btn-limpar">Limpar</button>
+  </form>
+
+  <p id="mensagem" aria-live="polite"></p>
+  <div id="tabela-agenda"></div>
+
+  <script src="https://unpkg.com/tabulator-tables@6.3.0/dist/js/tabulator.min.js"></script>
+  <script src="{{ url_for('static', filename='js/agenda.js') }}"></script>
 </body>
 </html>

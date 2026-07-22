@@ -8,6 +8,7 @@ from functools import wraps
 from flask import (
     Blueprint,
     current_app,
+    jsonify,
     redirect,
     render_template,
     request,
@@ -15,6 +16,7 @@ from flask import (
     url_for,
 )
 
+from app.services.api_client import fetch_agendamentos
 from app.services.auth import authenticate
 
 bp = Blueprint("main", __name__)
@@ -31,6 +33,28 @@ def login_required_html(view):
         return view(*args, **kwargs)
 
     return wrapped
+
+
+def login_required_json(view):
+    # Igual ao de cima, mas pra rotas JSON (devolve 401 em vez de redirect)
+    @wraps(view)
+    def wrapped(*args, **kwargs):
+        if not session.get("user_id"):
+            return jsonify(success=False, erro="nao_autenticado"), 401
+        return view(*args, **kwargs)
+
+    return wrapped
+
+
+def _filtrar_agendamentos(items, q):
+    # Busca simples: olha se o texto aparece no paciente, CPF ou médico
+    q = q.casefold()
+    resultado = []
+    for item in items:
+        texto = f"{item['paciente']} {item['cpf']} {item['medico']}".casefold()
+        if q in texto:
+            resultado.append(item)
+    return resultado
 
 
 @bp.get("/")
@@ -92,5 +116,34 @@ def logout():
 @bp.get("/agenda")
 @login_required_html
 def agenda():
-    # Por enquanto só um stub (placeholder). Tabulator entra depois.
+    # Só o HTML + Tabulator. Os dados vêm via JavaScript de /api/agendamentos
     return render_template("agenda.html", username=session.get("username"))
+
+
+@bp.get("/api/agendamentos")
+@login_required_json
+def api_agendamentos():
+    # Única rota de dados: busca na mock_api, filtra se tiver ?q=, devolve JSON
+    q = (request.args.get("q") or "").strip()
+    busca_aplicada = bool(q)
+
+    result = fetch_agendamentos(
+        current_app.config["MOCK_API_URL"],
+        current_app.config["API_TIMEOUT"],
+    )
+
+    if not result.ok:
+        return jsonify(success=False, erro=result.error_code), 502
+
+    items = result.items
+    if busca_aplicada:
+        items = _filtrar_agendamentos(items, q)
+
+    motivo = None
+    if not items:
+        if busca_aplicada:
+            motivo = "sem_resultado_busca"
+        else:
+            motivo = "agenda_vazia"
+
+    return jsonify(success=True, agendamentos=items, motivo=motivo), 200
