@@ -1,6 +1,6 @@
 # Agenda Médica
 
-Aplicação web simples de **agenda médica** para o desafio técnico: login com usuário em SQLite, busca de agendamentos via HTTP em uma API simulada e exibição em tabela com Tabulator.
+Aplicação web de **agenda médica** para o desafio técnico: login com usuário em SQLite, busca de agendamentos via HTTP em uma API simulada e exibição em tabela com Tabulator.
 
 ## Tecnologias
 
@@ -52,7 +52,7 @@ No login, use **usuário ou e-mail** no mesmo campo + a senha.
 ## Exemplos de uso
 
 1. Abra http://localhost:5000  
-2. Entre com `admin` / `admin123` (ou o e-mail acima)  
+2. Entre com `admin` / `admin123` ou o email `admin@example.com`  
 3. Na agenda, a tabela carrega os agendamentos da API  
 4. Use o campo de busca para filtrar por **paciente**, **CPF** ou **médico**  
 5. Clique em **Limpar** para voltar à lista completa  
@@ -65,7 +65,7 @@ Com o Compose no ar:
 ```bash
 # API fora do ar (ConnectionError real)
 docker compose stop mock_api
-# Atualize a agenda => mensagem amigável de falha
+# Atualize a agenda => mensagem de falha
 
 # Ligar de novo
 docker compose start mock_api
@@ -102,14 +102,14 @@ pytest -v
 
 ## Decisões técnicas
 
-- **Dois containers:** a web e a API mock ficam separadas; a comunicação é HTTP de verdade.
-- **SQLite só para usuários;** agendamentos vêm da API.
+- **Dois containers:** a web e a API mock ficam separadas; a comunicação é HTTP.
+- **SQLite só para usuários;** agendamentos vem da API.
 - **Sessão Flask nativa** (sem Flask-Login).
 - **`sqlite3` puro** (sem ORM) + script `seed.py` na raiz.
 - **Uma rota JSON** (`/api/agendamentos?q=`) na carga e na busca; `/agenda` só entrega o HTML.
 - **Busca no servidor** (paciente, CPF ou médico). `q` vazio = lista completa (não é erro).
 - Mensagens distintas: agenda vazia (`agenda_vazia`) vs busca sem match (`sem_resultado_busca`).
-- Item da API com campo obrigatório ausente/`""` → **só aquele item** é descartado.
+- Item da API com campo obrigatório ausente/`""` => **só aquele item** é descartado.
 
 ## Limitações conhecidas
 
