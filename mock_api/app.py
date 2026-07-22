@@ -7,7 +7,7 @@ import time
 
 from flask import Flask, Response, jsonify
 
-# Dois agendamentos de exemplo com todos os campos que o desafio pede
+# Seis agendamentos de exemplo com todos os campos que o desafio pede
 SAMPLE = [
     {
         "paciente": "Maria Silva",
@@ -26,6 +26,46 @@ SAMPLE = [
         "especialidade": "Cardiologia",
         "data": "2026-07-23",
         "horario": "14:30",
+        "convenio": "Particular",
+        "status": "Pendente",
+    },
+    {
+        "paciente": "Juliana Mendes",
+        "cpf": "456.789.123-00",
+        "medico": "Dr. Carlos Ribeiro",
+        "especialidade": "Dermatologia",
+        "data": "2026-07-24",
+        "horario": "10:15",
+        "convenio": "Amil",
+        "status": "Confirmado",
+    },
+    {
+        "paciente": "Rafael Oliveira",
+        "cpf": "321.654.987-00",
+        "medico": "Dra. Beatriz Lima",
+        "especialidade": "Ortopedia",
+        "data": "2026-07-24",
+        "horario": "16:00",
+        "convenio": "SulAmérica",
+        "status": "Cancelado",
+    },
+    {
+        "paciente": "Camila Ferreira",
+        "cpf": "159.753.486-00",
+        "medico": "Dr. Joao Souza",
+        "especialidade": "Clínico Geral",
+        "data": "2026-07-25",
+        "horario": "08:30",
+        "convenio": "Unimed",
+        "status": "Confirmado",
+    },
+    {
+        "paciente": "Lucas Martins",
+        "cpf": "753.159.852-00",
+        "medico": "Dra. Fernanda Rocha",
+        "especialidade": "Pediatria",
+        "data": "2026-07-25",
+        "horario": "11:45",
         "convenio": "Particular",
         "status": "Pendente",
     },
