@@ -115,8 +115,6 @@ pytest -v
 
 - Não há cadastro de usuários nem CRUD de agendamentos.
 - A API de agendamentos é simulada (dados fixos / modos de teste).
-- Servidor de desenvolvimento do Flask (adequado ao desafio, não a produção).
-- Interface propositalmente simples (login + tabela).
 
 ## Estrutura (visão geral)
 
