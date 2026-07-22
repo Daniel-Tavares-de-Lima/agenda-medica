@@ -60,32 +60,121 @@ No login, use **usuário ou e-mail** no mesmo campo + a senha.
 
 ### Simular falhas da API
 
-Com o Compose no ar:
+A `mock_api` possui modos que facilitam a demonstração do tratamento de falhas. Os comandos abaixo devem ser executados no **PowerShell**, na raiz do projeto.
 
-```bash
-# API fora do ar (ConnectionError real)
-docker compose stop mock_api
-# Atualize a agenda => mensagem de falha
+> Antes de mudar o `MOCK_MODE`, use `docker compose down`. Isso encerra os containers atuais e garante que o novo modo seja aplicado na próxima inicialização.
 
-# Ligar de novo
-docker compose start mock_api
-```
+#### 1. API sem dados (lista vazia)
 
-Outros modos (defina antes do `up` ou no `.env`):
-
-```text
-MOCK_MODE=empty      => lista vazia
-MOCK_MODE=invalid    => JSON com formato errado
-MOCK_MODE=malformed  => corpo que não é JSON
-MOCK_MODE=slow       => demora maior que o timeout do client
-```
-
-Exemplo no PowerShell:
+Encerre os containers, selecione o modo `empty` e inicie novamente:
 
 ```powershell
+docker compose down
 $env:MOCK_MODE="empty"
 docker compose up --build
 ```
+
+Depois:
+
+1. Abra http://localhost:5000;
+2. faça login;
+3. acesse a agenda.
+
+A API responderá com uma lista vazia (`[]`) e a página deverá mostrar:
+
+```text
+Não há agendamentos disponíveis.
+```
+
+Esse cenário representa uma API funcionando normalmente, mas sem agendamentos cadastrados.
+
+#### 2. API com resposta inválida
+
+O projeto possui dois modos diferentes para simular uma resposta inválida.
+
+##### JSON válido, mas no formato errado
+
+```powershell
+docker compose down
+$env:MOCK_MODE="invalid"
+docker compose up --build
+```
+
+Nesse modo, a API devolve um objeto JSON quando a aplicação esperava uma lista.
+
+##### Corpo que não é um JSON válido
+
+```powershell
+docker compose down
+$env:MOCK_MODE="malformed"
+docker compose up --build
+```
+
+Nesse modo, a API devolve um texto que não pode ser convertido para JSON.
+
+Nos dois casos, depois de fazer login e abrir a agenda, deverá aparecer:
+
+```text
+Não foi possível carregar os agendamentos. Tente novamente.
+```
+
+#### 3. API lenta (timeout)
+
+O modo `slow` faz a API demorar mais do que o tempo máximo configurado no cliente HTTP:
+
+```powershell
+docker compose down
+$env:MOCK_MODE="slow"
+docker compose up --build
+```
+
+Ao abrir ou atualizar a agenda, deverá aparecer:
+
+```text
+Não foi possível carregar os agendamentos. Tente novamente.
+```
+
+#### 4. API offline (fora do ar)
+
+Primeiro, volte ao modo normal e inicie os dois serviços:
+
+```powershell
+docker compose down
+$env:MOCK_MODE="ok"
+docker compose up --build
+```
+
+Com o Compose ainda em execução, abra outro terminal na raiz do projeto e pare somente a API:
+
+```powershell
+docker compose stop mock_api
+```
+
+Depois, atualize a página da agenda com `F5` ou clique em **Buscar**. A aplicação web continuará no ar, mas não conseguirá se comunicar com a API. A página deverá mostrar:
+
+```text
+Não foi possível carregar os agendamentos. Tente novamente.
+```
+
+Para ligar a API novamente:
+
+```powershell
+docker compose start mock_api
+```
+
+Atualize a agenda e os dados deverão voltar a aparecer.
+
+#### Voltar ao funcionamento normal
+
+Ao terminar os testes de falha, execute:
+
+```powershell
+docker compose down
+$env:MOCK_MODE="ok"
+docker compose up --build
+```
+
+O valor definido com `$env:MOCK_MODE` vale para o terminal atual. Se abrir outro PowerShell, a variável precisará ser definida novamente ou será usado o valor presente no arquivo `.env`.
 
 ### Executar sem Docker (opcional)
 
