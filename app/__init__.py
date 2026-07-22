@@ -28,4 +28,9 @@ def create_app(test_config=None):
     # Logs no terminal, ajuda quando algo der errado.
     logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
+    # "Liga" as rotas (login, agenda, logout) neste app
+    from app.routes import bp
+
+    app.register_blueprint(bp)
+
     return app

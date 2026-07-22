@@ -6,6 +6,8 @@ import os
 import sys
 
 from dotenv import load_dotenv
+
+# ferramenta de criptografia de senhas do Flask.
 from werkzeug.security import generate_password_hash
 
 from app.db import get_connection, init_schema
@@ -21,6 +23,7 @@ def seed_usuario_teste(db_path=None):
     email = os.getenv("SEED_EMAIL", "admin@example.com")
     password = os.getenv("SEED_PASSWORD", "admin123")
 
+    # Abre a conexão com o banco de dados
     conn = get_connection(db_path)
     try:
         # Garante que a tabela existe antes de inserir.
@@ -30,7 +33,7 @@ def seed_usuario_teste(db_path=None):
         row = conn.execute(
             "SELECT id FROM usuarios WHERE username = ? OR email = ?",
             (username, email),
-        ).fetchone()
+        ).fetchone() # retorna o primeiro resultado da consulta, tipo um [0] num array.
         if row:
             return
 
