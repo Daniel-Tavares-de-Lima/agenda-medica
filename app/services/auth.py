@@ -41,7 +41,8 @@ def authenticate(db_path, identifier, password):
             return None
 
         # check_password_hash compara a senha digitada com o hash salvo
-        if check_password_hash(row["password_hash"], password):
+        # Se NÃO bater, o login falha
+        if not check_password_hash(row["password_hash"], password):
             logger.warning("Login falhou: senha inválida (user_id=%s)", row["id"])
             return None
 

@@ -1,4 +1,4 @@
-# Funções pra mexer com o SQLite (banco em arquivo).
+# Funções pra mexer com o SQLite 
 # Ainda tô aprendendo: o sqlite3 já vem com o Python, não precisa instalar nada.
 
 import sqlite3
