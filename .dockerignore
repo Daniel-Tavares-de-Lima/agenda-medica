@@ -1,0 +1,13 @@
+
+# (deixa o build mais rápido e a imagem menor)
+
+.venv
+__pycache__
+*.pyc
+.git
+.superpowers
+docs
+candidatura_ts.pdf
+.env
+*.db
+.pytest_cache

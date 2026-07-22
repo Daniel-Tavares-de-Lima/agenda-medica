@@ -1,0 +1,31 @@
+
+services:
+  mock_api:
+    build: ./mock_api
+    environment:
+      # ok | empty | invalid | malformed | slow
+      MOCK_MODE: ${MOCK_MODE:-ok}
+      MOCK_SLOW_SECONDS: ${MOCK_SLOW_SECONDS:-5}
+      PORT: "5001"
+      FLASK_DEBUG: "0"
+    ports:
+      - "5001:5001"
+
+  web:
+    build: .
+    environment:
+      SECRET_KEY: ${SECRET_KEY:-troque-esta-chave}
+      DATABASE_PATH: /app/data/agenda.db
+      MOCK_API_URL: http://mock_api:5001
+      API_TIMEOUT: ${API_TIMEOUT:-3}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      SEED_USERNAME: ${SEED_USERNAME:-admin}
+      SEED_EMAIL: ${SEED_EMAIL:-admin@example.com}
+      SEED_PASSWORD: ${SEED_PASSWORD:-admin123}
+      FLASK_DEBUG: "0"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - mock_api
