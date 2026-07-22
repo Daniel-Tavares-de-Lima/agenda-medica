@@ -1,5 +1,4 @@
-# Testes do login — ainda sem as rotas, estes testes devem falhar (404).
-# Depois que a gente criar o login, aí eles passam.
+# Testes do login (válido, e-mail e inválido).
 
 def test_login_valido_redireciona(client):
     # Usuário e senha certos → Flask manda pra /agenda (código 302 = redirect)
