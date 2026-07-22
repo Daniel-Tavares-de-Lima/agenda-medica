@@ -12,7 +12,7 @@ SAMPLE = [
     {
         "paciente": "Maria Silva",
         "cpf": "123.456.789-00",
-        "medico": "Dr. João Souza",
+        "medico": "Dr. Joao Souza",
         "especialidade": "Clínico Geral",
         "data": "2026-07-22",
         "horario": "09:00",
