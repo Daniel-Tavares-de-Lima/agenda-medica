@@ -1,0 +1,26 @@
+# Segredos e ambiente
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# Banco local
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE / SO
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Material do desafio (NÃO sobe para o GitHub)
+candidatura_ts.pdf
+docs/
+**/specs/
+*-design.md
