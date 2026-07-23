@@ -8,7 +8,7 @@ def test_seed_cria_usuario(tmp_path):
     db = tmp_path / "a.db"
 
     seed_usuario_teste(str(db))
-    seed_usuario_teste(str(db))  # segunda vez — tem que continuar com 1 usuário só
+    seed_usuario_teste(str(db))  # segunda vez => tem que continuar com 1 usuário só
 
     conn = get_connection(str(db))
     rows = conn.execute("SELECT username, email FROM usuarios").fetchall()

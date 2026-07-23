@@ -7,7 +7,7 @@ import time
 
 from flask import Flask, Response, jsonify
 
-# Seis agendamentos de exemplo com todos os campos que o desafio pede
+# 6 agendamentos de exemplo com todos os campos que o desafio pede
 SAMPLE = [
     {
         "paciente": "Maria Silva",

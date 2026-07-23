@@ -68,7 +68,7 @@ def index():
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     # GET = só mostrar o formulário
-    # POST = alguém clicou em Entrar e mandou os dados
+    # POST = clicou em Entrar e mandou os dados
     if request.method == "GET":
         if session.get("user_id"):
             return redirect(url_for("main.agenda"))

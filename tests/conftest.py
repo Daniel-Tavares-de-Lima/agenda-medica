@@ -12,7 +12,7 @@ from seed import seed_usuario_teste
 @pytest.fixture()
 def app(tmp_path):
     # tmp_path = pasta temporária que o pytest cria só pra esse teste
-    # Assim a gente não bagunça o data/agenda.db de verdade
+    # Assim não bagunça o data/agenda.db de verdade
     db_path = tmp_path / "test.db"
 
     application = create_app(

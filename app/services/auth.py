@@ -1,4 +1,4 @@
-# Aqui fica a lógica de validação para saber se o login e senha existem no banco
+# lógica de validação para saber se o login e senha existem no banco
 
 import logging
 import sqlite3

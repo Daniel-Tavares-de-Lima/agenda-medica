@@ -1,7 +1,7 @@
 # Testes do login (válido, e-mail e inválido).
 
 def test_login_valido_redireciona(client):
-    # Usuário e senha certos → Flask manda pra /agenda (código 302 = redirect)
+    # Usuário e senha certos => Flask manda pra /agenda (código 302 = redirect)
     resp = client.post(
         "/login",
         data={"identifier": "admin", "password": "admin123"},
@@ -22,7 +22,7 @@ def test_login_valido_com_email(client):
 
 
 def test_login_invalido_permanece_200(client):
-    # Senha errada → fica na tela de login (200) com mensagem de erro
+    # Senha errada =>fica na tela de login (200) com mensagem de erro
     resp = client.post(
         "/login",
         data={"identifier": "admin", "password": "errada"},

@@ -8,16 +8,7 @@ import requests
 logger = logging.getLogger(__name__)
 
 # Campos exigidos em cada agendamento que a API deve devolver
-REQUIRED = (
-    "paciente",
-    "cpf",
-    "medico",
-    "especialidade",
-    "data",
-    "horario",
-    "convenio",
-    "status",
-)
+REQUIRED = ("paciente", "cpf", "medico", "especialidade", "data", "horario", "convenio", "status")
 
 
 class ApiResult:
