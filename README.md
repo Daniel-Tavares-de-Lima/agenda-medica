@@ -183,10 +183,31 @@ Dois terminais, com venv e `pip install -r requirements.txt`:
 1. `cd mock_api` → `python run.py` (porta 5001)  
 2. Na raiz → `python seed.py` → `python run.py` (porta 5000)
 
-Testes:
+### Executar os testes
 
-```bash
-pytest -v
+Na raiz do projeto, crie e ative o ambiente virtual, instale as dependências e execute o Pytest:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m pytest -v
+```
+
+Resultado verificado:
+
+```text
+collected 7 items
+
+tests/test_agendamentos.py::test_api_indisponivel_retorna_502 PASSED
+tests/test_agendamentos.py::test_busca_sem_correspondencia PASSED
+tests/test_agendamentos.py::test_sem_sessao_api_401 PASSED
+tests/test_login.py::test_login_valido_redireciona PASSED
+tests/test_login.py::test_login_valido_com_email PASSED
+tests/test_login.py::test_login_invalido_permanece_200 PASSED
+tests/test_seed.py::test_seed_cria_usuario PASSED
+
+7 passed
 ```
 
 ## Decisões técnicas
