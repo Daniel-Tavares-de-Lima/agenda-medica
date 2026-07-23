@@ -1,10 +1,12 @@
-// JavaScript da agenda: pede os dados pro flask e joga no tabulator.
-// Ainda tô aprendendo — deixei bem direto o passo a passo.
+// pede os dados pro flask e joga no tabulator
+// Ainda tô aprendendo
 
 const mensagemEl = document.getElementById("mensagem");
 const campoBusca = document.getElementById("campo-busca");
 const formBusca = document.getElementById("form-busca");
 const btnLimpar = document.getElementById("btn-limpar");
+const totalAgendamentosEl = document.getElementById("total-agendamentos");
+const totalConfirmadosEl = document.getElementById("total-confirmados");
 
 // Cria a tabela vazia, os dados entram depois do fetch
 const tabela = new Tabulator("#tabela-agenda", {
@@ -32,6 +34,21 @@ function mostrarMensagem(texto, ehErro) {
   } else {
     mensagemEl.classList.remove("erro");
   }
+}
+
+// Atualiza os contadores com base na lista que está na tela 
+function atualizarResumo(lista) {
+  const total = lista.length;
+  // Conta só os que tem status "Confirmado" 
+  let confirmados = 0;
+  for (let i = 0; i < lista.length; i++) {
+    const status = (lista[i].status || "").toLowerCase();
+    if (status === "confirmado") {
+      confirmados = confirmados + 1;
+    }
+  }
+  totalAgendamentosEl.textContent = String(total);
+  totalConfirmadosEl.textContent = String(confirmados);
 }
 
 // Traduz o código "motivo" que veio do Flask 
@@ -72,12 +89,14 @@ async function carregarAgendamentos(q) {
         true
       );
       tabela.setData([]);
+      atualizarResumo([]);
       tabela.options.placeholder = "Não foi possível carregar os dados.";
       return;
     }
 
     const lista = data.agendamentos || [];
     tabela.setData(lista);
+    atualizarResumo(lista);
 
     const textoMotivo = mensagemDoMotivo(data.motivo);
     if (textoMotivo) {
@@ -95,6 +114,7 @@ async function carregarAgendamentos(q) {
       true
     );
     tabela.setData([]);
+    atualizarResumo([]);
   }
 }
 
